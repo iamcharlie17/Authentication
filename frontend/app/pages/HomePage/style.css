@@ -1,0 +1,9 @@
+ul{
+    list-style: disc;
+    margin-left: 40px;
+}
+
+ol{
+    list-style: decimal;
+    margin-left: 40px;
+}
