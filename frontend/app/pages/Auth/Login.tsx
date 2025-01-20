@@ -1,8 +1,16 @@
 import { Link } from "react-router";
 import LoginForm from "./components/LoginForm";
 import { FcGoogle } from "react-icons/fc";
+import { useState, type FormEvent } from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ email, password });
+  };
   return (
     <section className="min-h-screen flex items-center bg-gray-50 justify-center">
       <div className="p-8 shadow-sm bg-white md:w-1/2 lg:w-1/3">
@@ -10,7 +18,7 @@ const Login = () => {
           <div className="text-center my-8">
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>
           </div>
-          <LoginForm />
+          <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} />
           <div className="text-center my-6">
             <h1>
               Don't have account?{" "}
