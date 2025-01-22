@@ -1,10 +1,6 @@
-import RefreshToken from "../models/RefreshToken.js";
+import mongoose from "mongoose";
 import User from "../models/User.js";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  verifyToken,
-} from "../utils/jwtUtils.js";
+import { generateAccessToken } from "../utils/jwtUtils.js";
 
 export const registerUser = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -35,13 +31,10 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
-
-    await RefreshToken.create({ userId: user._id, token: refreshToken });
 
     res.json({
       accessToken,
-      refreshToken,
+      user,
     });
   } catch (error) {
     console.log(error);
@@ -49,23 +42,13 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const refreshAccessToken = async (req, res) => {
-  const { refreshToken } = req.body;
-
+export const user = async (req, res) => {
   try {
-    if (!refreshToken)
-      return res.status(400).json({ message: "No refresh token provided" });
-
-    const decoded = verifyToken(refreshToken);
-    const storedToken = await RefreshToken.findOne({ token: refreshToken });
-
-    if (!storedToken)
-      return res.status(400).json({ message: "Invalid refresh token" });
-
-    const accessToken = generateAccessToken(decoded.userId);
-
-    res.json({ accessToken });
+    const id = new mongoose.Types.ObjectId(req.user.userId);
+    const user = await User.findOne({ _id: id });
+    res.send({ _id: user?._id, fullName: user?.fullName, email: user?.email });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    console.log(error);
+    res.send({ message: "Server Error" });
   }
 };
