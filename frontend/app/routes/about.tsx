@@ -1,3 +1,4 @@
+import AuthRoute from "~/privateRoutes/AuthRoute";
 import type { Route } from "../+types/root";
 
 export function meta({}: Route.MetaArgs) {

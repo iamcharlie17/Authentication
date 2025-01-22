@@ -18,7 +18,7 @@ const Login = () => {
           <div className="text-center my-8">
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>
           </div>
-          <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} />
+          <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword}/>
           <div className="text-center my-6">
             <h1>
               Don't have account?{" "}

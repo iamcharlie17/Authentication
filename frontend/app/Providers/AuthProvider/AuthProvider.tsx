@@ -1,20 +1,20 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState, type ReactNode } from "react";
 
 interface User {
   name: string;
 }
 
 interface AuthContextType {
-  user: User;
+  user: User | null;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  user: { name: "Hello" }, 
+  user: null,
 });
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>({ name: "Charlie" });
-
+  const [user, setUser] = useState<User | null>(null);
+  
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
