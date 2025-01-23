@@ -1,7 +1,10 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import RegisterForm from "./components/RegisterForm";
 import { useState, type FormEvent } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import useAuth from "~/hooks/useAuth";
 
 const Register = () => {
   const [fullName, setFullName] = useState("");
@@ -9,6 +12,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { setUser } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +27,38 @@ const Register = () => {
 
     setError("");
 
-    console.log({ fullName, email, password, confirmPassword });
+    try {
+      const response = await axios.post(
+        "http://localhost:3200/api/auth/register",
+        {
+          fullName,
+          email,
+          password,
+        }
+      );
+      if (response.data?.message) {
+        toast.success(response.data.message);
+        setUser({
+          _id: response.data.insertedId,
+          fullName,
+          email,
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data?.message || "Server Error");
+        } else if (error.request) {
+          setError("No response from the server. Please try again later.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+      } else {
+        setError("An unknown error occurred. Please try again.");
+      }
+      console.error("Registration Error:", error);
+    }
   };
 
   return (

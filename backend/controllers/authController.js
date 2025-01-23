@@ -7,7 +7,7 @@ export const registerUser = async (req, res) => {
   try {
     const isExist = await User.findOne({ email });
     if (isExist)
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(409).json({ message: "User already exists" });
 
     const user = new User({ fullName, email, password });
     await user.save();
@@ -34,7 +34,11 @@ export const loginUser = async (req, res) => {
 
     res.json({
       accessToken,
-      user,
+      user:{
+        _id: user?._id,
+        fullName: user?.fullName,
+        email: user?.email,
+      },
     });
   } catch (error) {
     console.log(error);

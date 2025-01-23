@@ -8,6 +8,8 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import { Toaster } from "react-hot-toast";
+
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import AuthProvider from "./Providers/AuthProvider/AuthProvider";
@@ -36,7 +38,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-white text-black">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
 
         <ScrollRestoration />
         <Scripts />
