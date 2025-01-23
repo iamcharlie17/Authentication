@@ -47,7 +47,7 @@ const NavBar = () => {
 
         <div>
           {user ? (
-            <h1>{user?.name}</h1>
+            <h1>{user?.fullName}</h1>
           ) : (
             <Link to="/login">
               <button className="bg-black text-white px-3 md:px-4 py-1 md:py-2 rounded-md uppercase font-semibold md:font-bold hover:bg-gray-800 transition duration-300">

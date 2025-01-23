@@ -1,6 +1,4 @@
-import useAuth from "~/hooks/useAuth";
 import "./style.css";
-
 const Homepage = () => {
   return (
     <section className="max-w-7xl mx-auto">

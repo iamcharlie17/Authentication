@@ -36,13 +36,9 @@ const Register = () => {
           password,
         }
       );
-      if (response.data?.message) {
+      if (response.data) {
         toast.success(response.data.message);
-        setUser({
-          _id: response.data.insertedId,
-          fullName,
-          email,
-        });
+        setUser(response.data.user);
         navigate("/");
       }
     } catch (error) {

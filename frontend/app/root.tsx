@@ -42,7 +42,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
           <Toaster />
         </AuthProvider>
-
         <ScrollRestoration />
         <Scripts />
       </body>
