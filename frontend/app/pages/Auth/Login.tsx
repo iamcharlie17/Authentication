@@ -1,15 +1,49 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import LoginForm from "./components/LoginForm";
 import { FcGoogle } from "react-icons/fc";
 import { useState, type FormEvent } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import useAuth from "~/hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ email, password });
+    try {
+      const response = await axios.post(
+        "http://localhost:3200/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      if (response.data) {
+        toast.success(response.data.message);
+        localStorage.setItem("token", response.data.accessToken);
+        setUser(response.data.user);
+        navigate("/");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data?.message || "Server Error");
+        } else if (error.request) {
+          setError("No response from the server. Please try again later.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+      } else {
+        setError("An unknown error occurred. Please try again.");
+      }
+      console.error("Login Error:", error);
+    }
   };
   return (
     <section className="min-h-screen flex items-center bg-gray-50 justify-center">
@@ -18,7 +52,12 @@ const Login = () => {
           <div className="text-center my-8">
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>
           </div>
-          <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword}/>
+          <LoginForm
+            handleSubmit={handleSubmit}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            error={error}
+          />
           <div className="text-center my-6">
             <h1>
               Don't have account?{" "}

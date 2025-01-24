@@ -12,7 +12,10 @@ export const registerUser = async (req, res) => {
     const user = new User({ fullName, email, password });
     const result = await user.save();
 
+    const accessToken = generateAccessToken(result._id);
+
     res.status(201).json({
+      accessToken,
       user: {
         _id: result?._id,
         fullName: result?.fullName,

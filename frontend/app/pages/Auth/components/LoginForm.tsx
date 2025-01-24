@@ -4,9 +4,15 @@ interface LoginFormProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   setEmail: (value: string) => void;
   setPassword: (value: string) => void;
+  error: string
 }
 
-const LoginForm = ({ handleSubmit, setEmail, setPassword }: LoginFormProps) => {
+const LoginForm = ({
+  handleSubmit,
+  setEmail,
+  setPassword,
+  error,
+}: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
@@ -34,6 +40,11 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword }: LoginFormProps) => {
           required
         />
       </div>
+      {error && (
+        <div>
+          <h1 className="text-red-500 my-1 font-semibold">{error}</h1>
+        </div>
+      )}
 
       <div>
         <button

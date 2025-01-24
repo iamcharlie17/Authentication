@@ -38,6 +38,7 @@ const Register = () => {
       );
       if (response.data) {
         toast.success(response.data.message);
+        localStorage.setItem("token", response.data.accessToken);
         setUser(response.data.user);
         navigate("/");
       }

@@ -1,11 +1,13 @@
 import { Link, NavLink } from "react-router";
 import { IoMenu } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "~/hooks/useAuth";
+import { IoTriangleSharp } from "react-icons/io5";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, setUser } = useAuth();
 
   const navLinks = [
     { url: "/", title: "Home" },
@@ -14,6 +16,12 @@ const NavBar = () => {
   ];
 
   const handleMenu = () => setIsOpen(!isOpen);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setDropdownOpen(false);
+    setUser(null);
+  };
 
   return (
     <div className="relative">
@@ -30,7 +38,7 @@ const NavBar = () => {
           </Link>
         </div>
 
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex gap-8 ">
           {navLinks.map((link, idx) => (
             <div key={idx}>
               <NavLink
@@ -47,7 +55,14 @@ const NavBar = () => {
 
         <div>
           {user ? (
-            <h1>{user?.fullName}</h1>
+            <div onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <h1 className="px-3 md:px-4 py-1 md:py-2 uppercase font-semibold flex items-center gap-2 cursor-pointer">
+                {user?.fullName}{" "}
+                <span className="rotate-180">
+                  <IoTriangleSharp />
+                </span>
+              </h1>
+            </div>
           ) : (
             <Link to="/login">
               <button className="bg-black text-white px-3 md:px-4 py-1 md:py-2 rounded-md uppercase font-semibold md:font-bold hover:bg-gray-800 transition duration-300">
@@ -76,6 +91,18 @@ const NavBar = () => {
             </NavLink>
           </div>
         ))}
+      </div>
+
+      <div
+        hidden={!dropdownOpen}
+        className="absolute right-5 top-12 md:top-16 rounded-lg shadow-lg z-10 bg-white px-10 py-6"
+      >
+        <button
+          onClick={handleLogout}
+          className="bg-black text-white px-3 md:px-4 py-1 md:py-2 rounded-md uppercase font-semibold md:font-bold hover:bg-gray-800 transition duration-300"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
