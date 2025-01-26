@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import useAxiosPrivate from "~/hooks/useAxiosPrivate";
+import useAxiosPublic from "~/hooks/useAxiosPublic";
 
 interface User {
   _id: string;
@@ -42,6 +44,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+  const axiosPrivate = useAxiosPrivate();
 
   const register = async (
     fullName: string,
@@ -50,14 +54,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3200/api/auth/register",
-        {
-          fullName,
-          email,
-          password,
-        }
-      );
+      const response = await axiosPublic.post("api/auth/register", {
+        fullName,
+        email,
+        password,
+      });
       if (response.data) {
         toast.success(response?.data?.message);
         localStorage.setItem("token", response?.data?.accessToken);
@@ -83,13 +84,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3200/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axiosPublic.post("api/auth/login", {
+        email,
+        password,
+      });
       if (response.data) {
         toast.success(response?.data?.message);
         localStorage.setItem("token", response.data?.accessToken);
@@ -116,13 +114,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
-  const getUser = async (token: string) => {
+  const getUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3200/api/auth/user", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axiosPrivate.get("api/auth/user");
       setUser(response.data);
     } catch (error) {
       console.log(error);
@@ -130,10 +124,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      getUser(token);
-    }
+    getUser();
   }, []);
 
   return (

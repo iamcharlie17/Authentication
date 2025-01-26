@@ -1,26 +1,28 @@
 import axios from "axios";
 
-const url = import.meta.env.BASE_URL;
+const url = "http://localhost:3200/";
 
 const axiosPrivate = axios.create({
   baseURL: url,
 });
 
-const useAxiosPrivate = async(url: string) => {
-  try {
-    const token = localStorage.getItem('token');
-    const config = {
-        url,
-        headers:{
-            Authorizatio: token ? token : ""
+const useAxiosPrivate = () => {
+  axiosPrivate.interceptors.request.use(
+    (config) => {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers.Authorization = token;
         }
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
+  );
 
-    return axiosPrivate(config);
-  } catch (error) {
-    console.error("API call failed:", error);
-    throw error;
-  }
+  return axiosPrivate;
 };
 
 export default useAxiosPrivate;
