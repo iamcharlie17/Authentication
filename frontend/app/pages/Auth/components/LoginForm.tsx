@@ -4,13 +4,15 @@ interface LoginFormProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   setEmail: (value: string) => void;
   setPassword: (value: string) => void;
-  error: string
+  loading: boolean;
+  error: string;
 }
 
 const LoginForm = ({
   handleSubmit,
   setEmail,
   setPassword,
+  loading,
   error,
 }: LoginFormProps) => {
   return (
@@ -47,12 +49,21 @@ const LoginForm = ({
       )}
 
       <div>
-        <button
-          type="submit"
-          className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
-        >
-          Login
-        </button>
+        {loading ? (
+          <button
+            type="submit"
+            className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
+          >
+            Wait...
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
+          >
+            Login
+          </button>
+        )}
       </div>
     </form>
   );

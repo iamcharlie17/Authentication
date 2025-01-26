@@ -2,8 +2,6 @@ import { Link, useNavigate } from "react-router";
 import LoginForm from "./components/LoginForm";
 import { FcGoogle } from "react-icons/fc";
 import { useState, type FormEvent } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
 import useAuth from "~/hooks/useAuth";
 
 const Login = () => {
@@ -11,38 +9,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { setUser } = useAuth();
-  const navigate = useNavigate();
+  const { loading, login } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3200/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
-      if (response.data) {
-        toast.success(response.data.message);
-        localStorage.setItem("token", response.data.accessToken);
-        setUser(response.data.user);
-        navigate("/");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data?.message || "Server Error");
-        } else if (error.request) {
-          setError("No response from the server. Please try again later.");
-        } else {
-          setError("An unexpected error occurred. Please try again.");
-        }
-      } else {
-        setError("An unknown error occurred. Please try again.");
-      }
-      console.error("Login Error:", error);
+      await login(email, password);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Login failed");
     }
   };
   return (
@@ -53,6 +27,7 @@ const Login = () => {
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>
           </div>
           <LoginForm
+            loading = {loading}
             handleSubmit={handleSubmit}
             setEmail={setEmail}
             setPassword={setPassword}

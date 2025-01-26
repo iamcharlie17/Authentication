@@ -13,9 +13,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { setUser } = useAuth();
-
-  const navigate = useNavigate();
+  const { register, loading } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,33 +26,9 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:3200/api/auth/register",
-        {
-          fullName,
-          email,
-          password,
-        }
-      );
-      if (response.data) {
-        toast.success(response.data.message);
-        localStorage.setItem("token", response.data.accessToken);
-        setUser(response.data.user);
-        navigate("/");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data?.message || "Server Error");
-        } else if (error.request) {
-          setError("No response from the server. Please try again later.");
-        } else {
-          setError("An unexpected error occurred. Please try again.");
-        }
-      } else {
-        setError("An unknown error occurred. Please try again.");
-      }
-      console.error("Registration Error:", error);
+      await register(fullName, email, password);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -66,6 +40,7 @@ const Register = () => {
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>
           </div>
           <RegisterForm
+          loading = {loading}
             handleSubmit={handleSubmit}
             setFullName={setFullName}
             setEmail={setEmail}

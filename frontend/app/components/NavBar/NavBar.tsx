@@ -1,13 +1,13 @@
 import { Link, NavLink } from "react-router";
 import { IoMenu } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAuth from "~/hooks/useAuth";
 import { IoTriangleSharp } from "react-icons/io5";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user, setUser } = useAuth();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { url: "/", title: "Home" },
@@ -18,9 +18,8 @@ const NavBar = () => {
   const handleMenu = () => setIsOpen(!isOpen);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     setDropdownOpen(false);
-    setUser(null);
   };
 
   return (

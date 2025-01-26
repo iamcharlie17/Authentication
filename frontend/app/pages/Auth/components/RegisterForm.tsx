@@ -6,6 +6,7 @@ interface RegisterFormProps {
   setEmail: (value: string) => void;
   setPassword: (value: string) => void;
   setConfirmPassword: (value: string) => void;
+  loading: boolean;
   error: string;
 }
 
@@ -15,6 +16,7 @@ const RegisterForm = ({
   setEmail,
   setPassword,
   setConfirmPassword,
+  loading,
   error,
 }: RegisterFormProps) => {
   return (
@@ -76,12 +78,21 @@ const RegisterForm = ({
         </div>
       )}
       <div>
-        <button
-          type="submit"
-          className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
-        >
-          Register
-        </button>
+        {loading ? (
+          <button
+            type="submit"
+            className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
+          >
+            Wait...
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full bg-black text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-gray-800 transition-colors"
+          >
+            Register
+          </button>
+        )}
       </div>
     </form>
   );
