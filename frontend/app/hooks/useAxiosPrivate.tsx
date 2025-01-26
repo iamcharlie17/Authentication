@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:3200/";
+const url = import.meta.env.VITE_BASE_URL;
 
 const axiosPrivate = axios.create({
   baseURL: url,
