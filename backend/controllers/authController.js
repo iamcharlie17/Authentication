@@ -20,6 +20,7 @@ export const registerUser = async (req, res) => {
         _id: result?._id,
         fullName: result?.fullName,
         email: result?.email,
+        role: result?.role,
       },
       message: "User registered successfully",
     });
@@ -48,6 +49,7 @@ export const loginUser = async (req, res) => {
         _id: user?._id,
         fullName: user?.fullName,
         email: user?.email,
+        role: user?.role,
       },
       message: "User Login Success!",
     });
@@ -61,7 +63,12 @@ export const user = async (req, res) => {
   try {
     const id = new mongoose.Types.ObjectId(req.user.userId);
     const user = await User.findOne({ _id: id });
-    res.send({ _id: user?._id, fullName: user?.fullName, email: user?.email });
+    res.send({
+      _id: user?._id,
+      fullName: user?.fullName,
+      email: user?.email,
+      role: user?.role,
+    });
   } catch (error) {
     console.log(error);
     res.send({ message: "Server Error" });

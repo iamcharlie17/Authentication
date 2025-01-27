@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
+import authDataRoutes from './routes/authDataRoutes.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/data", authDataRoutes);
 
 app.get("/", (req, res) => {
   res.json("Server is running");
