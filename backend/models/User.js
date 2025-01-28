@@ -13,17 +13,31 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-  },
+    required: function () {
+      return !this.googleId; 
+    },
+  },  
   role: {
     type: String,
     enum: ["user", "admin", "moderator"],
     default: "user",
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
+  avatar: {
+    type: String,
+  },
+  isGoogleUser: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || this.isGoogleUser) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -35,6 +49,9 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.matchedPassword = async function (enteredPassword) {
+  if (this.isGoogleUser) {
+    throw new Error("Google users do not have a password.");
+  }
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

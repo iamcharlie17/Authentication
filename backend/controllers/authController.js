@@ -21,6 +21,7 @@ export const registerUser = async (req, res) => {
         fullName: result?.fullName,
         email: result?.email,
         role: result?.role,
+        avatar: result?.avatar
       },
       message: "User registered successfully",
     });
@@ -50,6 +51,7 @@ export const loginUser = async (req, res) => {
         fullName: user?.fullName,
         email: user?.email,
         role: user?.role,
+        avatar: user?.avatar
       },
       message: "User Login Success!",
     });
@@ -68,6 +70,7 @@ export const user = async (req, res) => {
       fullName: user?.fullName,
       email: user?.email,
       role: user?.role,
+      avatar: user?.avatar
     });
   } catch (error) {
     console.log(error);
