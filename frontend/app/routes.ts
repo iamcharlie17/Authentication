@@ -13,4 +13,5 @@ export default [
   ]),
   route("login", "./routes/login.tsx"),
   route("register", "./routes/register.tsx"),
+  route("google-sign-in-success", "./pages/Auth/GoogleSignInSuccess.tsx"),
 ] satisfies RouteConfig;
