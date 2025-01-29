@@ -56,7 +56,7 @@ const NavBar = () => {
           {user ? (
             <div onClick={() => setDropdownOpen(!dropdownOpen)}>
               <h1 className="px-3 md:px-4 py-1 md:py-2 uppercase font-semibold flex items-center gap-2 cursor-pointer">
-                {user?.fullName}{" "}
+                {user?.fullName.split(" ")[0]}{" "}
                 <span className="rotate-180">
                   <IoTriangleSharp />
                 </span>

@@ -25,7 +25,7 @@ const Login = () => {
   };
   return (
     <section className="min-h-screen flex items-center bg-gray-50 justify-center">
-      <div className="p-8 shadow-sm bg-white md:w-1/2 lg:w-1/3">
+      <div className="p-8 shadow-sm bg-white w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
         <div>
           <div className="text-center my-8">
             <h1 className="text-2xl md:text-4xl font-semibold">Welcome back</h1>

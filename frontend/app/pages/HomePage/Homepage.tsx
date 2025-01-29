@@ -13,7 +13,7 @@ const Homepage = () => {
   return (
     <section className="max-w-7xl">
       <div className="min-h-[calc(100vh-64px-48px)] md:min-h-[calc(100vh-88px-48px)]">
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center pt-8">
           <div className="flex flex-col md:flex-row gap-8 ">
             <button
               onClick={async () => {
