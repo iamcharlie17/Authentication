@@ -2,12 +2,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import passport from "passport";
 import "./config/passport.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import authDataRoutes from "./routes/authDataRoutes.js";
-import { generateAccessToken } from "./utils/jwtUtils.js";
 
 dotenv.config();
 
@@ -31,23 +29,6 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/data", authDataRoutes);
-
-app.get(
-  "/api/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-app.get(
-  "/api/auth/google/callback",
-  passport.authenticate("google", { session: false }),
-  async (req, res) => {
-    const user = req.user;
-    const accessToken = generateAccessToken(user._id);
-    res.redirect(
-      `http://localhost:5173/google-sign-in-success?token=${accessToken}`
-    );
-  }
-);
 
 app.get("/", (req, res) => {
   res.json("Server is running");

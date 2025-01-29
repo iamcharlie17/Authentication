@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import LoginForm from "./components/LoginForm";
 import { FcGoogle } from "react-icons/fc";
 import { useState, type FormEvent } from "react";
@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async() => {
-    window.open("http://localhost:3200/api/auth/google", "_self");
+    window.open(`${import.meta.env.VITE_SERVER_URL}api/auth/google`, "_self");
   };
   return (
     <section className="min-h-screen flex items-center bg-gray-50 justify-center">

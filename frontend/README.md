@@ -1,3 +1,3 @@
 .env
 
-VITE_BASE_URL
+VITE_SERVER_URL

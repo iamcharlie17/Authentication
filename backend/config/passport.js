@@ -18,11 +18,9 @@ passport.use(
       const avatar = photos[0].value;
 
       try {
-        // Check if the user already exists
         let user = await User.findOne({ $or: [{ googleId: id }, { email }] });
 
         if (!user) {
-          // Create a new user if they don't exist
           user = new User({
             fullName: displayName,
             email,
@@ -33,7 +31,6 @@ passport.use(
           await user.save();
         }
 
-        // Pass the user object to the next middleware
         done(null, user);
       } catch (error) {
         done(error, null);

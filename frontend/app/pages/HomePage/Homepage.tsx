@@ -1,17 +1,14 @@
 import { useState } from "react";
 import "./style.css";
-import useAxiosPublic from "~/hooks/useAxiosPublic";
-import useAxiosPrivate from "~/hooks/useAxiosPrivate";
-import useAuth from "~/hooks/useAuth";
+import { axiosPublic } from "~/hooks/useAxiosPublic";
+import { axiosPrivate } from "~/hooks/useAxiosPrivate";
 
 interface ApiResponse {
   data: string;
 }
 
 const Homepage = () => {
-  const {user} = useAuth();
-  const axiosPublic = useAxiosPublic();
-  const axiosPrivate = useAxiosPrivate();
+
   const [data, setData] = useState<ApiResponse | null>(null);
   return (
     <section className="max-w-7xl">

@@ -7,8 +7,8 @@ import React, {
 } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-import useAxiosPrivate from "~/hooks/useAxiosPrivate";
-import useAxiosPublic from "~/hooks/useAxiosPublic";
+import { axiosPrivate } from "~/hooks/useAxiosPrivate";
+import { axiosPublic } from "~/hooks/useAxiosPublic";
 
 interface User {
   _id: string;
@@ -46,8 +46,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
-  const axiosPrivate = useAxiosPrivate();
 
   const register = async (
     fullName: string,

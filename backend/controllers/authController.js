@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
         fullName: result?.fullName,
         email: result?.email,
         role: result?.role,
-        avatar: result?.avatar
+        avatar: result?.avatar,
       },
       message: "User registered successfully",
     });
@@ -51,7 +51,7 @@ export const loginUser = async (req, res) => {
         fullName: user?.fullName,
         email: user?.email,
         role: user?.role,
-        avatar: user?.avatar
+        avatar: user?.avatar,
       },
       message: "User Login Success!",
     });
@@ -70,10 +70,20 @@ export const user = async (req, res) => {
       fullName: user?.fullName,
       email: user?.email,
       role: user?.role,
-      avatar: user?.avatar
+      avatar: user?.avatar,
     });
   } catch (error) {
     console.log(error);
     res.send({ message: "Server Error" });
   }
+};
+
+// google sign in---
+
+export const googleSignIn = async (req, res) => {
+  const user = req.user;
+  const accessToken = generateAccessToken(user._id);
+  res.redirect(
+    `http://localhost:5173/google-sign-in-success?token=${accessToken}`
+  );
 };
