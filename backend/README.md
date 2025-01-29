@@ -1,9 +1,10 @@
-.env
+.env values:
 
-PORT 
-MONGO_URI 
-JWT_SECRET 
-FRONTEND_URL
-
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
+<ol>
+    <li>PORT</li>
+    <li>MONGO_URI </li>
+    <li>JWT_SECRET </li>
+    <li>FRONTEND_URL</li>
+    <li>GOOGLE_CLIENT_ID</li>
+    <li>GOOGLE_CLIENT_SECRET</li>
+ </ol>
